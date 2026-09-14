@@ -9,6 +9,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import QRCode from "qrcode";
+import { Resvg } from "@resvg/resvg-js";
 import { PALETA, qrEstilizado } from "./lib-qr.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -27,9 +28,24 @@ if (!url) {
 await mkdir(salida, { recursive: true });
 const monograma = await readFile(join(raiz, "public/monograma.svg"), "utf8");
 
+/** Rasteriza un SVG a PNG al ancho pedido. */
+async function aPng(svg, ancho, destino) {
+  const resvg = new Resvg(svg, {
+    fitTo: { mode: "width", value: ancho },
+    // La tarjeta lleva texto en Hoefler Text; sin esto saldría con otra fuente.
+    font: {
+      fontFiles: [join(raiz, "assets/fuente/HoeflerText-Regular.ttf")],
+      defaultFontFamily: "Hoefler Text",
+      loadSystemFonts: false,
+    },
+  });
+  await writeFile(destino, resvg.render().asPng());
+}
+
 // ── Versión con la estética de la boda ──────────────────────────────────
 const svgBonito = qrEstilizado(url, { monograma });
 await writeFile(join(salida, "qr.svg"), svgBonito);
+await aPng(svgBonito, 2000, join(salida, "qr.png"));
 
 // ── Versión lisa, por si algún escáner viejo se atraganta ───────────────
 const opcionesLisas = {
@@ -54,9 +70,11 @@ const cuerpoMonograma = monograma
   .trim();
 
 const vbQr = svgBonito.match(/viewBox="([^"]+)"/)[1];
-const qrInterno = svgBonito
-  .replace(/<svg[^>]*>/, "")
-  .replace("</svg>", "")
+// Ojo: el QR estilizado lleva el monograma como <svg> anidado, así que hay
+// que quitar el ÚLTIMO </svg>, no el primero, o el XML queda descuadrado.
+const sinApertura = svgBonito.replace(/<svg[^>]*>/, "");
+const qrInterno = sinApertura
+  .slice(0, sinApertura.lastIndexOf("</svg>"))
   .trim();
 
 const LADO_QR = 54;
@@ -88,11 +106,14 @@ const tarjeta = `<svg xmlns="http://www.w3.org/2000/svg" width="105mm" height="1
 </svg>`;
 
 await writeFile(join(salida, "tarjeta-a6.svg"), tarjeta);
+// 1240 px de ancho = 105 mm a 300 ppp, la resolución que pide una imprenta.
+await aPng(tarjeta, 1240, join(salida, "tarjeta-a6.png"));
 
 console.log(`✓ QR generado para: ${url}
 
-  qr/qr.svg          con el monograma y los colores de la boda
-  qr/tarjeta-a6.svg  tarjeta 105 × 148 mm lista para imprimir
-  qr/qr-simple.svg   versión lisa, de respaldo
-  qr/qr-simple.png   2400 px, para WhatsApp
+  qr/qr.png          2000 px · el QR con el monograma  ← el que quieres
+  qr/qr.svg          el mismo, en vector para imprenta
+  qr/tarjeta-a6.png  tarjeta 105 × 148 mm a 300 ppp
+  qr/tarjeta-a6.svg  la misma, en vector
+  qr/qr-simple.png   versión lisa de respaldo
 `);

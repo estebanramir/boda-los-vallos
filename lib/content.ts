@@ -7,31 +7,18 @@
 
 export const boda = {
   novia: "María Camila",
-  noviaApellidos: "Espinosa Granados",
   novio: "Simón",
-  novioApellidos: "Ramírez Pineda",
 
   fechaCorta: "25 · 26 · 27 de septiembre",
   anio: "2026",
   sede: "Brizantha Hotel Campestre",
   region: "Villavicencio, Meta",
-
-  /** Arranque del fin de semana: viernes 25 sept 2026, 5:00pm (hora Colombia) */
-  inicio: "2026-09-25T17:00:00-05:00",
-  /** Ceremonia: sábado 26 sept 2026, 4:00pm */
-  ceremonia: "2026-09-26T16:00:00-05:00",
-
-  mapsBrizantha: "https://maps.google.com/?q=Brizantha+Hotel+Campestre+Villavicencio+Meta",
-  mapsDuranta: "https://maps.google.com/?q=Duranta+Hotel+Campestre+Villavicencio+Meta",
 } as const;
 
-export const intro = {
-  titulo: "Un fin de semana para celebrar nuestro amor",
-  parrafos: [
-    "Queremos que estos días sean una experiencia inolvidable, llena de momentos para compartir, disfrutar y celebrar juntos.",
-    "Como nuestra boda comienza el viernes y termina el domingo, preparamos este itinerario para que tengan claridad sobre los horarios y puedan disfrutar cada actividad sin preocupaciones.",
-  ],
-  cierre: "¡Gracias por acompañarnos en este momento tan especial de nuestras vidas!",
+/** Cierra la página. Para cambiarla, basta con editar estas dos líneas. */
+export const cita = {
+  texto: "Yo soy de mi amado, y mi amado es mío.",
+  fuente: "Cantares 6:3",
 } as const;
 
 export type Evento = {
@@ -51,8 +38,6 @@ export type Dia = {
   numero: string;
   mes: string;
   momento: string;
-  /** Una línea con lo esencial del día, para quien no quiera leer todo. */
-  resumen: string;
   eventos: Evento[];
 };
 
@@ -64,7 +49,6 @@ export const dias: Dia[] = [
     numero: "25",
     mes: "Septiembre",
     momento: "La bienvenida",
-    resumen: "Cóctel de bienvenida en la piscina de Brizantha, a partir de las 5:00 pm.",
     eventos: [
       {
         hora: "5:00 pm — 10:00 pm",
@@ -83,12 +67,11 @@ export const dias: Dia[] = [
     numero: "26",
     mes: "Septiembre",
     momento: "El gran día",
-    resumen: "La ceremonia es a las 4:00 pm en Brizantha. Entrada de invitados desde las 3:30 pm.",
     eventos: [
       {
         hora: "8:00 am — 10:00 am",
         titulo: "Desayuno",
-        lugar: "Tu hotel",
+        lugar: "Brizantha o Duranta",
         detalle: "En el hotel en el que te estés hospedando.",
       },
       {
@@ -114,6 +97,8 @@ export const dias: Dia[] = [
         hora: "3:30 pm",
         titulo: "Apertura y entrada de invitados",
         lugar: "Brizantha",
+        detalle:
+          "Preséntate en la recepción de Brizantha: desde ahí te guiarán y te acomodarán en tu lugar.",
       },
       {
         hora: "4:00 pm",
@@ -138,7 +123,6 @@ export const dias: Dia[] = [
     numero: "27",
     mes: "Septiembre",
     momento: "La despedida",
-    resumen: "Asado llanero a la 1:00 pm en Brizantha, con piscina abierta todo el día.",
     eventos: [
       {
         hora: "8:00 am — 10:00 am",
@@ -156,74 +140,6 @@ export const dias: Dia[] = [
     ],
   },
 ];
-
-/** Tomado de la invitación oficial. El domingo no venía especificado: es sugerencia. */
-export const vestuario = [
-  {
-    dia: "Viernes",
-    evento: "Cóctel de bienvenida",
-    codigo: "Sin código",
-    detalle:
-      "Entendemos que llegas de viaje, por lo que te sugerimos usar ropa fresca y cómoda.",
-    lineas: [],
-  },
-  {
-    dia: "Sábado",
-    evento: "Ceremonia y recepción",
-    codigo: "Formal veraniego",
-    detalle: "",
-    lineas: [
-      {
-        quien: "Mujeres",
-        texto:
-          "Vestido largo formal unicolor. Se reserva el color blanco, verde y similares.",
-      },
-      {
-        quien: "Hombres",
-        texto: "Camisa de lino o guayabera blanca manga larga y pantalón claro.",
-      },
-    ],
-  },
-  {
-    dia: "Domingo",
-    evento: "Asado llanero",
-    codigo: "Casual y fresco",
-    detalle:
-      "Ropa ligera y vestido de baño. La piscina está abierta todo el día, así que ven listo para quedarte.",
-    lineas: [],
-  },
-] as const;
-
-export const hoteles = [
-  {
-    nombre: "Brizantha",
-    descripcion: "Sede del cóctel, la ceremonia, la recepción y el asado de despedida.",
-    maps: boda.mapsBrizantha,
-  },
-  {
-    nombre: "Duranta",
-    descripcion:
-      "El segundo hotel del fin de semana. Habrá conductores elegidos para llevarte de vuelta después de la fiesta.",
-    maps: boda.mapsDuranta,
-  },
-] as const;
-
-export const clima = {
-  resumen:
-    "Septiembre en el llano es cálido y húmedo, con sol fuerte al mediodía y aguaceros cortos en la tarde.",
-  datos: [
-    { etiqueta: "Temperatura", valor: "23° — 31°" },
-    { etiqueta: "Ambiente", valor: "Húmedo" },
-    { etiqueta: "Lluvia", valor: "Chubascos en la tarde" },
-    { etiqueta: "Altura", valor: "467 m s. n. m." },
-  ],
-  empaca: [
-    "Protector solar y repelente",
-    "Sombrero o gorra para el sol del mediodía",
-    "Vestido de baño y toalla ligera",
-    "Una chaqueta delgada para la noche",
-  ],
-} as const;
 
 export const recomendaciones = [
   {

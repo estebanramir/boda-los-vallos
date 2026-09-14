@@ -1,7 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Italianno } from "next/font/google";
+import { Cormorant_Garamond, Italianno } from "next/font/google";
 import { boda } from "@/lib/content";
 import "./globals.css";
+
+const cormorant = Cormorant_Garamond({
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
 
 const italianno = Italianno({
   weight: "400",
@@ -45,7 +53,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-CO" className={italianno.variable}>
+    <html lang="es-CO" className={`${cormorant.variable} ${italianno.variable}`}>
       <body className="papel-grano antialiased">{children}</body>
     </html>
   );

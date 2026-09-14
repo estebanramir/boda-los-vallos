@@ -1,36 +1,5 @@
 @import "tailwindcss";
 
-/* ───────────────────────── Tipografía local ─────────────────────────
-   Hoefler Text, extraída del paquete aprobado de la invitación.        */
-@font-face {
-  font-family: "Hoefler Text";
-  src: url("/fonts/hoefler-text-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Hoefler Text";
-  src: url("/fonts/hoefler-text-italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Hoefler Text";
-  src: url("/fonts/hoefler-text-black.woff2") format("woff2");
-  font-weight: 700 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Hoefler Text";
-  src: url("/fonts/hoefler-text-black-italic.woff2") format("woff2");
-  font-weight: 700 900;
-  font-style: italic;
-  font-display: swap;
-}
-
 @theme {
   /* Paleta tomada de la invitación */
   --color-papel: #faf8f4;
@@ -46,8 +15,8 @@
   --color-decorativo: #b3ac9c;     /* líneas y viñetas, nunca texto */
   --color-linea: #d5cfc2;
 
-  --font-serif: "Hoefler Text", "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
-  --font-script: var(--font-italianno), "Hoefler Text", cursive;
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --font-script: var(--font-italianno), cursive;
 
   --tracking-titulo: 0.22em;
   --tracking-nombre: 0.16em;
@@ -79,12 +48,12 @@
 
   html {
     /* Escala base generosa: 18px en móvil, 19px de tablet en adelante. */
-    font-size: 112.5%;
+    font-size: 118.75%;
   }
 
   @media (min-width: 640px) {
     html {
-      font-size: 118.75%;
+      font-size: 125%;
     }
   }
 
@@ -141,8 +110,7 @@
     border-radius: 2px;
   }
 
-  /* Hoefler trae numerales old-style: preciosos en prosa, confusos en
-     horas y cuentas regresivas (el 11 parece "II"). Ahí forzamos lining. */
+  /* Horas y fechas: cifras de ancho fijo para que las listas se alineen. */
   .cifra {
     font-variant-numeric: lining-nums tabular-nums;
   }

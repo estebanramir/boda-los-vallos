@@ -1,4 +1,4 @@
-import { boda } from "@/lib/content";
+import { boda, cita } from "@/lib/content";
 import { Monograma } from "./Monograma";
 import { Revelar } from "./Revelar";
 
@@ -8,9 +8,14 @@ export function Cierre() {
       <Revelar>
         <Monograma className="mx-auto h-24 w-24 opacity-95 sm:h-28 sm:w-28" />
 
-        <p className="script mt-9 text-5xl sm:text-6xl" style={{ color: "inherit" }}>
-          Nos vemos en el llano
-        </p>
+        <blockquote className="mt-9">
+          <p className="script text-5xl leading-[1.05] sm:text-6xl" style={{ color: "inherit" }}>
+            {cita.texto}
+          </p>
+          <cite className="versalita mt-5 block text-[0.68rem] not-italic opacity-75">
+            {cita.fuente}
+          </cite>
+        </blockquote>
 
         <div className="mx-auto mt-9 flex max-w-xs flex-col items-center gap-3">
           <span aria-hidden className="h-px w-14 bg-[var(--color-papel)]/35" />

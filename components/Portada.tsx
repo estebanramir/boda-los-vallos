@@ -1,5 +1,4 @@
 import { boda } from "@/lib/content";
-import { Cuenta } from "./Cuenta";
 import { Monograma } from "./Monograma";
 
 export function Portada() {
@@ -51,13 +50,6 @@ export function Portada() {
           {boda.sede} · {boda.region}
         </p>
         <span aria-hidden className="h-px w-16 bg-[var(--color-linea)]" />
-      </div>
-
-      <div
-        className="surgir mt-8 text-[var(--color-oliva)] sm:mt-10"
-        style={{ animationDelay: "500ms" }}
-      >
-        <Cuenta objetivo={boda.inicio} />
       </div>
 
       <a

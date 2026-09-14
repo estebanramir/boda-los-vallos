@@ -176,19 +176,11 @@ export function Itinerario() {
           className="surgir mt-5"
           style={{ animationDuration: "450ms" }}
         >
-          <p className="px-1 text-[0.98rem] leading-[1.6] text-[var(--color-tinta-suave)]">
-            {dia.resumen}
-          </p>
-
-          <ol className="mt-4 list-none divide-y divide-[var(--color-linea)] overflow-hidden rounded-sm border border-[var(--color-linea)] bg-[var(--color-papel)]">
+          <ol className=" list-none divide-y divide-[var(--color-linea)] overflow-hidden rounded-sm border border-[var(--color-linea)] bg-[var(--color-papel)]">
             {dia.eventos.map((e) => (
               <Fila key={e.titulo} evento={e} />
             ))}
           </ol>
-
-          <p className="mt-3 px-1 text-[0.88rem] text-[var(--color-tinta-tenue)]">
-            Toca un horario para ver más detalles.
-          </p>
         </div>
       </div>
     </section>
