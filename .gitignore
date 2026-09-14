@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# QR generado por scripts/qr.mjs (se regenera con la URL real)
+/qr/
