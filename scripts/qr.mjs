@@ -9,13 +9,12 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import QRCode from "qrcode";
+import { PALETA, qrEstilizado } from "./lib-qr.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const salida = join(raiz, "qr");
 
-const OLIVA = "#4a5241";
-const PAPEL = "#faf8f4";
-const TAUPE = "#6f6144";
+const { oliva: OLIVA, papel: PAPEL, taupe: TAUPE } = PALETA;
 
 const url = process.argv[2];
 if (!url) {
@@ -25,34 +24,37 @@ if (!url) {
   process.exit(1);
 }
 
-// Nivel H: aguanta hasta un 30% de daño o de superficie tapada, así que
-// el QR sigue leyéndose impreso, doblado o con el monograma encima.
-const opciones = {
+await mkdir(salida, { recursive: true });
+const monograma = await readFile(join(raiz, "public/monograma.svg"), "utf8");
+
+// ── Versión con la estética de la boda ──────────────────────────────────
+const svgBonito = qrEstilizado(url, { monograma });
+await writeFile(join(salida, "qr.svg"), svgBonito);
+
+// ── Versión lisa, por si algún escáner viejo se atraganta ───────────────
+const opcionesLisas = {
   errorCorrectionLevel: "H",
   margin: 2,
   color: { dark: OLIVA, light: PAPEL },
 };
+await writeFile(
+  join(salida, "qr-simple.svg"),
+  await QRCode.toString(url, { ...opcionesLisas, type: "svg" }),
+);
+await QRCode.toFile(join(salida, "qr-simple.png"), url, {
+  ...opcionesLisas,
+  width: 2400,
+});
 
-await mkdir(salida, { recursive: true });
-
-const svgQr = await QRCode.toString(url, { ...opciones, type: "svg" });
-await writeFile(join(salida, "qr.svg"), svgQr);
-
-await QRCode.toFile(join(salida, "qr.png"), url, { ...opciones, width: 2400 });
-
-// Tarjeta A6 (105 × 148 mm) a tamaño real, para mandar a la imprenta.
-const monograma = await readFile(join(raiz, "public/monograma.svg"), "utf8");
+// ── Tarjeta A6 (105 × 148 mm) a tamaño real, para la imprenta ───────────
 const vbMonograma = monograma.match(/viewBox="([^"]+)"/)[1];
 const cuerpoMonograma = monograma
   .replace(/<svg[^>]*>/, "")
   .replace("</svg>", "")
   .trim();
 
-// El SVG del QR trae su propio viewBox en módulos; lo anidamos con
-// width/height en milímetros y dejamos que el viewBox haga la escala.
-const vbQr = svgQr.match(/viewBox="([^"]+)"/)[1];
-const qrInterno = svgQr
-  .replace(/<\?xml[^>]*\?>/, "")
+const vbQr = svgBonito.match(/viewBox="([^"]+)"/)[1];
+const qrInterno = svgBonito
   .replace(/<svg[^>]*>/, "")
   .replace("</svg>", "")
   .trim();
@@ -73,7 +75,7 @@ const tarjeta = `<svg xmlns="http://www.w3.org/2000/svg" width="105mm" height="1
   <text x="52.5" y="49.5" text-anchor="middle" font-family="Hoefler Text, Georgia, serif"
         font-size="2.9" letter-spacing="0.45" fill="${TAUPE}">25 · 26 · 27 DE SEPTIEMBRE DE 2026</text>
 
-  <svg x="${X_QR}" y="57" width="${LADO_QR}" height="${LADO_QR}" viewBox="${vbQr}" shape-rendering="crispEdges">
+  <svg x="${X_QR}" y="57" width="${LADO_QR}" height="${LADO_QR}" viewBox="${vbQr}">
     ${qrInterno}
   </svg>
 
@@ -89,7 +91,8 @@ await writeFile(join(salida, "tarjeta-a6.svg"), tarjeta);
 
 console.log(`✓ QR generado para: ${url}
 
-  qr/qr.svg          vector, para imprenta
-  qr/qr.png          2400 px, para WhatsApp o redes
+  qr/qr.svg          con el monograma y los colores de la boda
   qr/tarjeta-a6.svg  tarjeta 105 × 148 mm lista para imprimir
+  qr/qr-simple.svg   versión lisa, de respaldo
+  qr/qr-simple.png   2400 px, para WhatsApp
 `);

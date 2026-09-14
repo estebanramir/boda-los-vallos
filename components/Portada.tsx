@@ -61,7 +61,7 @@ export function Portada() {
       </div>
 
       <a
-        href="#bienvenida"
+        href="#itinerario"
         className="surgir toque group mt-9 flex-col items-center gap-2.5 text-[var(--color-tinta-tenue)] transition-colors hover:text-[var(--color-oliva)] focus-visible:text-[var(--color-oliva)]"
         style={{ animationDelay: "640ms" }}
       >

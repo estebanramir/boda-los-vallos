@@ -26,6 +26,15 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: { index: false, follow: false },
+  // Sin esto, el navegador del móvil detecta "8:00 am" o "26 de septiembre"
+  // como datos accionables, los vuelve enlaces y los pinta con el color de
+  // acento del sistema, rompiendo la paleta.
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+  },
 };
 
 export const viewport: Viewport = {
