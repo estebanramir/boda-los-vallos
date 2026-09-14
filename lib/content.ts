@@ -15,10 +15,9 @@ export const boda = {
   region: "Villavicencio, Meta",
 } as const;
 
-/** Cierra la página. Para cambiarla, basta con editar estas dos líneas. */
+/** Cierra la página. Para cambiarla, basta con editar esta línea. */
 export const cita = {
-  texto: "Yo soy de mi amado, y mi amado es mío.",
-  fuente: "Cantares 6:3",
+  texto: "Un día nos miramos y supimos que no queríamos mirar a nadie más",
 } as const;
 
 export type Evento = {

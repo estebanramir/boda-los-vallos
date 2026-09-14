@@ -8,13 +8,13 @@ export function Cierre() {
       <Revelar>
         <Monograma className="mx-auto h-24 w-24 opacity-95 sm:h-28 sm:w-28" />
 
-        <blockquote className="mt-9">
-          <p className="script text-5xl leading-[1.05] sm:text-6xl" style={{ color: "inherit" }}>
+        <blockquote className="mx-auto mt-9 max-w-[19rem] sm:max-w-md">
+          <p
+            className="script text-[2.6rem] leading-[1.15] text-balance sm:text-5xl"
+            style={{ color: "inherit" }}
+          >
             {cita.texto}
           </p>
-          <cite className="versalita mt-5 block text-[0.68rem] not-italic opacity-75">
-            {cita.fuente}
-          </cite>
         </blockquote>
 
         <div className="mx-auto mt-9 flex max-w-xs flex-col items-center gap-3">
